@@ -1,0 +1,166 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo #nombre de la imagen que hemos creado
+    volumes:
+      - C:\Ambiente-desarrollo\workspa\bd-mongo:/data/db
+    restart: always
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    networks:
+      - 'dockernetflix-network'
+  registry-service:
+    image: lascencion/registry-service:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: registry-service
+    ports:
+      - '8761:8761'
+    networks:
+      - 'dockernetflix-network'
+  gateway:
+    image: lascencion/gateway:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: gateway
+    ports:
+      - '8090:8090'
+    depends_on:
+      - registry-service
+    networks:
+      - 'dockernetflix-network'
+  config-server:
+    image: lascencion/admin-config-server:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: config-server
+    ports:
+      - '8888:8888'
+    depends_on:
+      - registry-service  
+    networks:
+      - 'dockernetflix-network'
+  ms-customer:
+    image: lascencion/ms-customer:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-customer
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb
+    networks:
+      - 'dockernetflix-network'
+  ms-profile:
+    image: lascencion/ms-profile:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-profile
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb    
+    networks:
+      - 'dockernetflix-network'      
+  ms-transfer-bank:
+    image: lascencion/ms-transfer-bank:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-transfer-bank
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb    
+    networks:
+      - 'dockernetflix-network'
+  ms-creditcard:
+    image: lascencion/ms-creditcard:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-creditcard
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb    
+    networks:
+      - 'dockernetflix-network'
+  ms-credit-charge:
+    image: lascencion/ms-credit-charge:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-credit-charge
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb    
+    networks:
+      - 'dockernetflix-network' 
+  ms-credit-pay:
+    image: lascencion/ms-credit-pay:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-credit-pay
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb    
+    networks:
+      - 'dockernetflix-network'     
+  ms-current-account:
+    image: lascencion/ms-current-account:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-current-account
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb    
+    networks:
+      - 'dockernetflix-network'      
+  ms-current-account-transaction:
+    image: lascencion/ms-current-account-transaction:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-current-account-transaction
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb    
+    networks:
+      - 'dockernetflix-network'      
+      
+  ms-saving-account:
+    image: lascencion/ms-saving-account:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-saving-account
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb    
+    networks:
+      - 'dockernetflix-network'  
+  ms-saving-account-transaction:
+    image: lascencion/ms-saving-account-transaction:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-saving-account-transaction
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb    
+    networks:
+      - 'dockernetflix-network'  
+      
+  ms-fixed-term:
+    image: lascencion/ms-fixed-term:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-fixed-term
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb    
+    networks:
+      - 'dockernetflix-network'
+  ms-fixed-term-transaction:
+    image: lascencion/ms-fixed-term-transaction:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-fixed-term-transaction
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb    
+    networks:
+      - 'dockernetflix-network'      
+      
+networks:
+  dockernetflix-network: #necesitamos crear en una red para alojar los servicios en ella y que puedan comunicarse entre sí
+ 
