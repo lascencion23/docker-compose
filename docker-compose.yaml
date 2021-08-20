@@ -3,7 +3,7 @@ services:
   mongodb:
     image: mongo #nombre de la imagen que hemos creado
     volumes:
-      - C:\Ambiente-desarrollo\workspa\bd-mongo:/data/db
+      - F:\Trabajo\everis\projects-3-git\workspa\bd-mongo:/data/db
     restart: always
     container_name: mongodb
     ports:
@@ -33,11 +33,12 @@ services:
     restart: always
     container_name: config-server
     ports:
-      - '8888:8888'
+      - '8888:8080'
     depends_on:
       - registry-service  
     networks:
-      - 'dockernetflix-network'
+      dockernetflix-network:
+        ipv4_address: 172.21.0.4
   ms-customer:
     image: lascencion/ms-customer:0.1.0 #nombre de la imagen que hemos creado
     restart: always
@@ -46,6 +47,9 @@ services:
       - registry-service
       - config-server
       - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network'
   ms-profile:
@@ -55,7 +59,10 @@ services:
     depends_on:
       - registry-service
       - config-server
-      - mongodb    
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network'      
   ms-transfer-bank:
@@ -65,7 +72,10 @@ services:
     depends_on:
       - registry-service
       - config-server
-      - mongodb    
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network'
   ms-creditcard:
@@ -75,7 +85,10 @@ services:
     depends_on:
       - registry-service
       - config-server
-      - mongodb    
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network'
   ms-credit-charge:
@@ -85,7 +98,10 @@ services:
     depends_on:
       - registry-service
       - config-server
-      - mongodb    
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network' 
   ms-credit-pay:
@@ -95,7 +111,10 @@ services:
     depends_on:
       - registry-service
       - config-server
-      - mongodb    
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network'     
   ms-current-account:
@@ -105,7 +124,10 @@ services:
     depends_on:
       - registry-service
       - config-server
-      - mongodb    
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network'      
   ms-current-account-transaction:
@@ -115,7 +137,10 @@ services:
     depends_on:
       - registry-service
       - config-server
-      - mongodb    
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network'      
       
@@ -126,7 +151,10 @@ services:
     depends_on:
       - registry-service
       - config-server
-      - mongodb    
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network'  
   ms-saving-account-transaction:
@@ -136,7 +164,10 @@ services:
     depends_on:
       - registry-service
       - config-server
-      - mongodb    
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network'  
       
@@ -147,7 +178,10 @@ services:
     depends_on:
       - registry-service
       - config-server
-      - mongodb    
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network'
   ms-fixed-term-transaction:
@@ -157,10 +191,13 @@ services:
     depends_on:
       - registry-service
       - config-server
-      - mongodb    
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
     networks:
       - 'dockernetflix-network'      
       
 networks:
   dockernetflix-network: #necesitamos crear en una red para alojar los servicios en ella y que puedan comunicarse entre sí
- 
+    external: true
