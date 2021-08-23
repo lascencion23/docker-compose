@@ -196,7 +196,49 @@ services:
       - CONFIG_URI=http://172.21.0.4:8080/
       - ENVIRONMENT=docker
     networks:
-      - 'dockernetflix-network'      
+      - 'dockernetflix-network'
+
+  ms-reports:
+    image: lascencion/ms-reports:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-reports
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
+    networks:
+      - 'dockernetflix-network'
+
+  ms-debit-card:
+    image: dalembert721/ms-debit-card:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-debit-card
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
+    networks:
+      - 'dockernetflix-network'
+
+  ms-debit-card-transactions:
+    image: dalembert721/ms-debit-card-transactions:0.1.0 #nombre de la imagen que hemos creado
+    restart: always
+    container_name: ms-debit-card-transactions
+    depends_on:
+      - registry-service
+      - config-server
+      - mongodb
+    environment:
+      - CONFIG_URI=http://172.21.0.4:8080/
+      - ENVIRONMENT=docker
+    networks:
+      - 'dockernetflix-network'
       
 networks:
   dockernetflix-network: #necesitamos crear en una red para alojar los servicios en ella y que puedan comunicarse entre sí
