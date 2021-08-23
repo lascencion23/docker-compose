@@ -27,7 +27,8 @@ services:
     depends_on:
       - registry-service
     networks:
-      - 'dockernetflix-network'
+      dockernetflix-network:
+        ipv4_address: 172.21.0.5
   config-server:
     image: lascencion/admin-config-server:0.1.0 #nombre de la imagen que hemos creado
     restart: always
